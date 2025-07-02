@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>เช็คชื่อ QR Code (มา-ออก)</title>
+  <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <h1>สแกน QR Code เพื่อเช็คชื่อ (มา-ออก)</h1>
+
+  <div id="reader" style="width:300px;"></div>
+  <p id="result">รอการสแกน...</p>
+
+  <button id="btn-in" disabled>เช็คเข้า</button>
+  <button id="btn-out" disabled>เช็คออก</button>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzJpnCKofKwrxxo6OapMfasNs7q_Y6YTNn1MWTJgvCS9OSs6NjyZxMC_OGCeYviH-MQUw/exec"; // เปลี่ยนเป็น URL จริง
+    let lastScanData = null;
+
+    function onScanSuccess(decodedText, decodedResult) {
+      try {
+        lastScanData = JSON.parse(decodedText);
+
+        document.getElementById('result').innerText =
+          `พบ: เลขที่ ${lastScanData.no} | รหัส: ${lastScanData.student_id} | ${lastScanData.prefix} ${lastScanData.first_name} ${lastScanData.last_name} | ชั้น: ${lastScanData.class}`;
+
+        document.getElementById('btn-in').disabled = false;
+        document.getElementById('btn-out').disabled = false;
+      } catch (e) {
+        document.getElementById('result').innerText = "สแกนไม่ถูกต้อง กรุณาลองใหม่";
+        lastScanData = null;
+        document.getElementById('btn-in').disabled = true;
+        document.getElementById('btn-out').disabled = true;
+      }
+    }
+
+    function sendCheckInOut(status) {
+      if (!lastScanData) return alert('ยังไม่มีข้อมูลจากการสแกน');
+
+      const dataToSend = {
+        no: lastScanData.no,
+        student_id: lastScanData.student_id,
+        prefix: lastScanData.prefix,
+        first_name: lastScanData.first_name,
+        last_name: lastScanData.last_name,
+        class: lastScanData.class,
+        status: status,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(GAS_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(dataToSend)
+      })
+      .then(res => res.json())
+      .then(resp => {
+        if (resp.status === 'success') {
+          document.getElementById('result').innerText = `บันทึกสถานะ '${status}' สำเร็จ!`;
+          document.getElementById('btn-in').disabled = true;
+          document.getElementById('btn-out').disabled = true;
+        } else {
+          document.getElementById('result').innerText = `บันทึกไม่สำเร็จ: ${resp.message}`;
+        }
+      })
+      .catch(err => {
+        document.getElementById('result').innerText = `เกิดข้อผิดพลาด: ${err}`;
+      });
+    }
+
+    document.getElementById('btn-in').addEventListener('click', () => sendCheckInOut('เข้า'));
+    document.getElementById('btn-out').addEventListener('click', () => sendCheckInOut('ออก'));
+
+    let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+</body>
+</html>
