@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Drive Vault | Pakon</title>
+  <meta name="description" content="คลังลิงก์ Google Drive สำหรับเปิดและดาวน์โหลดไฟล์สำรองจากทุกอุปกรณ์" />
+  <style>
+    :root{--bg:#07101f;--panel:#0e1a2f;--panel2:#12233f;--text:#eef5ff;--muted:#9eb0c9;--accent:#5eead4;--accent2:#60a5fa;--danger:#fb7185;--line:#233858;--shadow:0 16px 50px rgba(0,0,0,.28)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:radial-gradient(circle at 10% 0%,#12325a 0,transparent 34%),linear-gradient(180deg,#07101f,#091426 55%,#07101f);color:var(--text);min-height:100vh}
+    .wrap{width:min(1120px,calc(100% - 28px));margin:auto}.hero{padding:54px 0 28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101d;font-size:24px;font-weight:900;box-shadow:var(--shadow)}
+    h1{font-size:clamp(30px,6vw,58px);line-height:1;margin:22px 0 12px;letter-spacing:-.04em}.sub{max-width:760px;color:var(--muted);font-size:16px;line-height:1.7}.pill{display:inline-flex;gap:8px;align-items:center;border:1px solid #2b456c;background:#0b1730b8;padding:8px 12px;border-radius:999px;color:#bfdbfe;font-size:13px}
+    .toolbar{position:sticky;top:0;z-index:20;padding:12px 0;background:linear-gradient(180deg,rgba(7,16,31,.96),rgba(7,16,31,.82));backdrop-filter:blur(14px)}.toolbarRow{display:grid;grid-template-columns:1fr auto;gap:10px}.search{width:100%;border:1px solid var(--line);background:#0c1930;color:var(--text);border-radius:16px;padding:15px 16px;font-size:16px;outline:none}.search:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(96,165,250,.12)}
+    .btn{border:1px solid var(--line);background:#12223e;color:var(--text);padding:12px 15px;border-radius:14px;font-weight:700;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-1px);border-color:#3b5d8e}.btn.primary{background:linear-gradient(135deg,#14b8a6,#3b82f6);border:0;color:#04101b}.btn.ghost{background:transparent}.btn.small{padding:9px 11px;border-radius:12px;font-size:13px}
+    .filters{display:flex;gap:8px;overflow:auto;padding:12px 0 4px;scrollbar-width:none}.chip{white-space:nowrap;border:1px solid var(--line);background:#0c1930;color:#b9c7da;border-radius:999px;padding:9px 13px;cursor:pointer}.chip.active{background:#dbeafe;color:#07101f;border-color:#dbeafe;font-weight:800}
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:13px;padding:18px 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-bottom:42px}.card{display:flex;flex-direction:column;min-height:210px;border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(180deg,rgba(18,35,63,.92),rgba(10,23,43,.94));box-shadow:0 10px 34px rgba(0,0,0,.18)}.cardTop{display:flex;justify-content:space-between;gap:12px}.icon{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:#112b4d;font-size:20px}.tag{font-size:12px;color:#99f6e4;border:1px solid #1f6d66;background:#0a2829;padding:6px 9px;border-radius:999px;height:max-content}.card h3{margin:16px 0 8px;font-size:18px;line-height:1.35}.desc{color:var(--muted);font-size:13px;line-height:1.6;flex:1}.actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}.empty{grid-column:1/-1;border:1px dashed #38567f;border-radius:22px;padding:42px;text-align:center;color:var(--muted);background:#0b172a}
+    footer{border-top:1px solid #172a45;color:#7990ad;padding:26px 0 42px;font-size:12px}.adminPanel{display:none;margin:10px 0 30px;padding:18px;border:1px solid var(--line);border-radius:20px;background:#0b172a}.adminPanel.show{display:block}.formGrid{display:grid;grid-template-columns:2fr 1fr;gap:10px}.field{width:100%;border:1px solid var(--line);background:#081426;color:var(--text);border-radius:12px;padding:12px}.hint{font-size:12px;color:var(--muted);line-height:1.6}
+    @media(max-width:860px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.grid{grid-template-columns:1fr}.toolbarRow{grid-template-columns:1fr}.hero{padding-top:34px}.formGrid{grid-template-columns:1fr}.card{min-height:190px}}
+  </style>
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <div class="brand"><div class="logo">D</div><div><strong>Drive Vault</strong><div style="color:#7f97b6;font-size:12px">Public backup link hub</div></div></div>
+    <h1>ไฟล์สำรอง อยู่ที่ไหนก็เปิดได้</h1>
+    <div class="sub">รวมลิงก์ Google Drive ที่ตั้งเป็น <b>Anyone with the link</b> ไว้ในหน้าเดียว เหมาะสำหรับใช้เป็นคลังไฟล์สำรองแทนการพกแฟลชไดรฟ</div>
+    <div style="margin-top:18px"><span class="pill">☁️ ใช้ได้จากมือถือ • คอม • ห้องเรียน</span></div>
+  </div></header>
+
+  <div class="toolbar"><div class="wrap">
+    <div class="toolbarRow">
+      <input id="search" class="search" placeholder="ค้นหาไฟล์ เช่น ใบงาน, เพลง, โปรแกรม, เอกสาร..." autocomplete="off" />
+      <button class="btn" id="adminBtn">⚙️ จัดการลิงก์</button>
+    </div>
+    <div class="filters" id="filters"></div>
+  </div></div>
+
+  <main class="wrap">
+    <section class="adminPanel" id="adminPanel">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><b>จัดการลิงก์บนเครื่องนี้</b><div class="hint">เพิ่มลิงก์ชั่วคราวได้ทันที และ Export JSON เพื่อสำรอง/นำไปอัปเดตไฟล์ links.json บน GitHub</div></div><div style="display:flex;gap:8px"><button class="btn small" id="exportBtn">Export JSON</button><label class="btn small" for="importFile">Import JSON</label><input id="importFile" type="file" accept="application/json" hidden></div></div>
+      <div class="formGrid" style="margin-top:14px"><input id="titleInput" class="field" placeholder="ชื่อไฟล์ / ชุดไฟล์"><input id="catInput" class="field" placeholder="หมวดหมู่ เช่น งานสอน"></div>
+      <input id="urlInput" class="field" style="margin-top:10px" placeholder="วางลิงก์ Google Drive ที่แชร์ Public" />
+      <input id="descInput" class="field" style="margin-top:10px" placeholder="รายละเอียดสั้น ๆ (ไม่บังคับ)" />
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="addBtn">+ เพิ่มลิงก์</button><button class="btn ghost" id="clearLocalBtn">ล้างรายการที่เพิ่มบนเครื่องนี้</button></div>
+    </section>
+
+    <div class="meta"><span id="count">กำลังโหลด...</span><span>ข้อมูลหลัก: <code>links.json</code></span></div>
+    <section class="grid" id="grid"></section>
+  </main>
+
+  <footer><div class="wrap">Drive Vault • หน้าเว็บนี้เก็บเฉพาะ “ลิงก์” ไม่ได้คัดลอกไฟล์จาก Google Drive • ตั้งสิทธิ์ไฟล์ใน Drive เป็น Anyone with the link ก่อนใช้งาน</div></footer>
+
+<script>
+const FALLBACK=[];
+let remoteLinks=[]; let localLinks=JSON.parse(localStorage.getItem('driveVaultLocal')||'[]'); let activeCat='ทั้งหมด';
+const $=s=>document.querySelector(s);
+function driveId(url=''){
+  const patterns=[/\/file\/d\/([a-zA-Z0-9_-]+)/,/id=([a-zA-Z0-9_-]+)/,/\/d\/([a-zA-Z0-9_-]+)/];
+  for(const p of patterns){const m=url.match(p);if(m)return m[1]} return null;
+}
+function directUrl(url){const id=driveId(url);return id?`https://drive.google.com/uc?export=download&id=${id}`:url}
+function esc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]))}
+function allLinks(){return [...remoteLinks,...localLinks]}
+function renderFilters(){const cats=['ทั้งหมด',...new Set(allLinks().map(x=>x.category||'อื่นๆ'))];$('#filters').innerHTML=cats.map(c=>`<button class="chip ${c===activeCat?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{activeCat=b.dataset.cat;renderFilters();render()})}
+function render(){const q=$('#search').value.trim().toLowerCase();const items=allLinks().filter(x=>(activeCat==='ทั้งหมด'||(x.category||'อื่นๆ')===activeCat)&&[x.title,x.description,x.category].join(' ').toLowerCase().includes(q));$('#count').textContent=`พบ ${items.length} รายการ จากทั้งหมด ${allLinks().length} รายการ`;
+  $('#grid').innerHTML=items.length?items.map((x,i)=>`<article class="card"><div class="cardTop"><div class="icon">📁</div><span class="tag">${esc(x.category||'อื่นๆ')}</span></div><h3>${esc(x.title||'ไม่มีชื่อ')}</h3><div class="desc">${esc(x.description||'ไฟล์สำรองบน Google Drive')}</div><div class="actions"><a class="btn small primary" href="${esc(directUrl(x.url))}" target="_blank" rel="noopener">⬇ ดาวน์โหลด</a><a class="btn small" href="${esc(x.url)}" target="_blank" rel="noopener">↗ เปิด Drive</a><button class="btn small ghost" onclick="copyLink('${encodeURIComponent(x.url)}',this)">⧉ คัดลอก</button>${x._local?`<button class="btn small ghost" style="color:#fda4af" onclick="removeLocal('${esc(x.id)}')">ลบ</button>`:''}</div></article>`).join(''):`<div class="empty"><div style="font-size:36px">☁️</div><h3>ยังไม่พบลิงก์</h3><div>กด “จัดการลิงก์” เพื่อเพิ่มรายการ หรือแก้ไฟล์ <code>links.json</code> บน GitHub</div></div>`}
+async function copyLink(encoded,btn){const url=decodeURIComponent(encoded);try{await navigator.clipboard.writeText(url);const old=btn.textContent;btn.textContent='✓ คัดลอกแล้ว';setTimeout(()=>btn.textContent=old,1200)}catch{prompt('คัดลอกลิงก์นี้',url)}}
+function saveLocal(){localStorage.setItem('driveVaultLocal',JSON.stringify(localLinks));renderFilters();render()}
+function removeLocal(id){localLinks=localLinks.filter(x=>x.id!==id);saveLocal()}
+window.removeLocal=removeLocal;window.copyLink=copyLink;
+async function load(){try{const r=await fetch('./links.json',{cache:'no-store'});remoteLinks=r.ok?await r.json():FALLBACK}catch{remoteLinks=FALLBACK}remoteLinks=remoteLinks.map(x=>({...x,_local:false}));localLinks=localLinks.map(x=>({...x,_local:true}));renderFilters();render()}
+$('#search').addEventListener('input',render);$('#adminBtn').onclick=()=>$('#adminPanel').classList.toggle('show');
+$('#addBtn').onclick=()=>{const title=$('#titleInput').value.trim(),url=$('#urlInput').value.trim(),category=$('#catInput').value.trim()||'อื่นๆ',description=$('#descInput').value.trim();if(!title||!url)return alert('กรุณากรอกชื่อและลิงก์');if(!/^https?:\/\//i.test(url))return alert('ลิงก์ไม่ถูกต้อง');localLinks.unshift({id:'l'+Date.now(),title,category,description,url,_local:true});['#titleInput','#urlInput','#descInput'].forEach(s=>$(s).value='');saveLocal()};
+$('#clearLocalBtn').onclick=()=>{if(confirm('ล้างรายการที่เพิ่มบนเครื่องนี้ทั้งหมด?')){localLinks=[];saveLocal()}};
+$('#exportBtn').onclick=()=>{const data=allLinks().map(({_local,...x})=>x);const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='links.json';a.click();URL.revokeObjectURL(a.href)};
+$('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const data=JSON.parse(rd.result);if(!Array.isArray(data))throw 0;localLinks=data.map((x,i)=>({...x,id:x.id||'i'+Date.now()+i,_local:true}));saveLocal()}catch{alert('ไฟล์ JSON ไม่ถูกต้อง')}};rd.readAsText(f)};
+load();
+</script>
+</body>
+</html>
